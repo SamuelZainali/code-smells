@@ -31,17 +31,17 @@ class Student {
 }
 
 function getStudentStatus(student: Student): string {
-  student.passed =
-    student.name == "Sebastian"
-      ? student.handedInOnTime
-        ? true
-        : false
-      : false;
-
-  if (student.passed) {
-    return "VG";
-  } else {
-    return "IG";
+  student.name == "Sebastian"
+  if (student.handedInOnTime == true){
+    student.passed = true;
+    return `${student.name}, your result is VG`;
+  }
+  else if (student.handedInOnTime == false){
+    student.passed = false;
+    return `${student.name}, your result is IG`;
+  }
+  else{
+    return 'No result';
   }
 }
 
@@ -61,26 +61,16 @@ function calculateAverageWeeklyTemperature(
   const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // 7 dagar - 24 timmar - 60 minuter - 60 sekunder - 1000 millisekunder
   const currentTimestamp = Date.now();
   let totalTemperature = 0;
-  let temperaturesCount = 0;
+  const CAPITAL_CITY ="Stockholm";
 
-  for (const temperature of temperatures) {
-    const isFromStockholm = temperature.city === "Stockholm";
-    const temperatureDate = temperature.date.getTime();
-    const isWithinOneWeek =
-      temperatureDate > currentTimestamp - oneWeekInMilliseconds;
-
-    if (isFromStockholm && isWithinOneWeek) {
-      totalTemperature += temperature.value;
-      temperaturesCount++;
+  for (let i =0; i<temperatures.length;i++){
+    if(temperatures[i].city === CAPITAL_CITY){
+      if(temperatures[i].date.getTime()> currentTimestamp - oneWeekInMilliseconds){
+        totalTemperature += temperatures[i].value;
+      }
     }
   }
-
-  if (temperaturesCount === 0) {
-    return 0;
-  }
-
-  const averageTemperature = totalTemperature / temperaturesCount;
-  return averageTemperature;
+  return totalTemperature / daysInWeek;
 }
 
 /*
@@ -160,7 +150,8 @@ function concatenateStrings() {
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
 */
-
+const age_requirement = 20;
+const errorMSG = `Du är under ${age_requirement} år`;
 class User {
   constructor(
     public name: string,
@@ -168,6 +159,7 @@ class User {
     public email: string,
     public password: string
   ) {}
+
 
   get age(): number {
     const ageDiff = Date.now() - this.birthday.getTime();
@@ -177,9 +169,8 @@ class User {
 }
 
 function createUser(newUser: User) {
-  if (newUser.age < 20) {
-    throw new Error("Du är under 20 år");
+  if (newUser.age < age_requirement) {
+    return errorMSG;
   }
-
   // Logik för att skapa en användare
 }
